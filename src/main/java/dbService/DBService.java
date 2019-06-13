@@ -22,7 +22,7 @@ public class DBService {
         gson = new Gson();
     }
 
-    public ResponseObject<Status> getStatus() throws DBException {
+    public synchronized ResponseObject<Status> getStatus() throws DBException {
 
         int responseCode = 418;
 
@@ -35,15 +35,16 @@ public class DBService {
 
             BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
 
+            Status status = gson.fromJson(in.readLine(), Status.class);
 
-            return new ResponseObject<Status>(gson.fromJson(in.readLine(), Status.class), responseCode);
+            return new ResponseObject<Status>(status, responseCode);
 
         } catch (IOException e) {
             throw new DBException("Ошибка соединения. Response code: " + responseCode, e);
         }
     }
 
-    public ResponseObject<NetworkStatus> getNetworkStatus() throws DBException {
+    public synchronized ResponseObject<NetworkStatus> getNetworkStatus() throws DBException {
 
         int responseCode = 418;
 

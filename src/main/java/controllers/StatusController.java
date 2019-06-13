@@ -20,12 +20,17 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
+
+import static controllers.MainController.mediator;
 
 public class StatusController implements Initializable {
     //-----------------------------------------------------------------------------------------------------------------
+    final static int STOPPPED = 0;
+    final static int RUNNING = 1;
+    final static int PAUSED = 3;
 
-    private final AtomicBoolean running = new AtomicBoolean(false);
+    private final AtomicInteger state = new AtomicInteger(STOPPPED);
 
     //-----------------------------------------------------------------------------------------------------------------
 
@@ -63,7 +68,7 @@ public class StatusController implements Initializable {
 
     @FXML
     private void connectBtnPressed(ActionEvent event) {
-        if (!running.get()) {
+        if (state.get() == STOPPPED) {
             connect();
         } else {
             disconnect();
@@ -106,14 +111,29 @@ public class StatusController implements Initializable {
 
     //-----------------------------------------------------------------------------------------------------------------
 
-    public void connect() {
-        ControllerMediator.getInstance().setGUIWaiting();
+    private void connect() {
+        mediator.setGUIWaiting();
         startJob();
     }
 
-    public void disconnect() {
+    private void disconnect() {
         stopJob();
-        ControllerMediator.getInstance().setGUIDisconnect();
+        mediator.setGUIDisconnect();
+    }
+
+    public void pause() {
+        state.set(PAUSED);
+        stopJob();
+    }
+
+    public void resume() {
+        state.set(RUNNING);
+        startJob();
+    }
+
+    private void error(String message) {
+        stopJob();
+        mediator.setGUIError(message);
     }
 
     public String getIP() {
@@ -121,18 +141,22 @@ public class StatusController implements Initializable {
         return new IpAddressValidator().isValid(IP) ? IP : null;
     }
 
+    public int getState() {
+        return state.intValue();
+    }
+
     //-----------------------------------------------------------------------------------------------------------------
 
     private void startJob() {
 
         String IP = getIP();
-        if(IP == null) { ControllerMediator.getInstance().setGUIError("Введите валидный IP-адрес"); return; }
+        if(IP == null) { error("Введите валидный IP-адрес"); return; }
 
         Thread th = new Thread("ЖОПА") {
             public void run() {
-                running.set(true);
+                state.set(RUNNING);
                 DBService dbService = new DBService(IP);
-                while(running.get()) {
+                while(state.get() == RUNNING) {
                     try {
                         Status status = dbService.getStatus().getOb();
                         NetworkStatus networkStatus = dbService.getNetworkStatus().getOb();
@@ -143,7 +167,8 @@ public class StatusController implements Initializable {
                             @Override
                             public void run() {
                                 if (statusCode == 200 && networkCode == 200) {
-                                    ControllerMediator.getInstance().setGUIConnect();
+                                    mediator.setGUIConnect();
+                                    mediator.getController(BarController.class).resetWDT();
 
                                     cameraLbl.setText(networkStatus.getCameraStatus() ? "Подключено" : "Нет связи");
                                     DLSLbl.setText(networkStatus.getDLSStatus() ? "Подключено" : "Нет связи");
@@ -159,8 +184,6 @@ public class StatusController implements Initializable {
 
                                     if (status.getSd_warn().equals("true")) progressBar.setStyle("-fx-accent: red");
                                     else progressBar.setStyle("-fx-accent: rgb(0, 142, 190)");
-                                } else {
-                                    ControllerMediator.getInstance().setGUIWaiting();
                                 }
                             }
                         });
@@ -168,10 +191,9 @@ public class StatusController implements Initializable {
                         Thread.sleep(1000);
 
                     } catch (InterruptedException | DBException e) {
-                        if(!running.get()) break;
+                        if(state.get() == STOPPPED) break;
                         Platform.runLater(() -> {
-                            stopJob();
-                            ControllerMediator.getInstance().setGUIError(e.getMessage());
+                            error(e.getMessage());
                         });
                     }
                 }
@@ -183,6 +205,6 @@ public class StatusController implements Initializable {
     }
 
     private void stopJob() {
-        running.set(false);
+        state.set(STOPPPED);
     }
 }

@@ -1,16 +1,21 @@
 package controllers;
 
+import dbService.entity.Status;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.shape.Circle;
+import java.util.concurrent.atomic.AtomicBoolean;
+
+import static controllers.MainController.mediator;
+import static controllers.StatusController.RUNNING;
 
 public class BarController {
 
-    private boolean isDoing = false;
+    private final AtomicBoolean wdt = new AtomicBoolean(false);
 
-    private Thread blink;
+    //-----------------------------------------------------------------------------------------------------------------
 
     @FXML
     private Label conInfoLbl;
@@ -20,6 +25,8 @@ public class BarController {
 
     @FXML
     private Circle lamp;
+
+    //-----------------------------------------------------------------------------------------------------------------
 
     public void setGreenLamp() {
         ColorAdjust colorAdjust = new ColorAdjust();
@@ -54,5 +61,44 @@ public class BarController {
 
     public void setTextConInfoLbl(String text) {
         conInfoLbl.setText(text);
+    }
+
+    //-----------------------------------------------------------------------------------------------------------------
+
+    public void startStateCtrl() {
+        Thread stateCtrl = new Thread("STATE") {
+            @Override
+            public void run() {
+                try {
+                    while (true) {
+
+                        if(mediator.getController(StatusController.class).getState() == RUNNING) {
+                            if(wdt.get()) {
+                                Platform.runLater(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        mediator.setGUIWaiting();
+                                    }
+                                });
+                            } else {
+                                wdt.set(true);
+                            }
+                        }
+
+                        Thread.sleep(2000);
+
+                    }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+
+        stateCtrl.setDaemon(true);
+        stateCtrl.start();
+    }
+
+    public void resetWDT() {
+        wdt.set(false);
     }
 }
