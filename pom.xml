@@ -15,7 +15,19 @@
             <artifactId>gson</artifactId>
             <version>2.8.5</version>
         </dependency>
+    <!--////////////////////FOR_TEST_SERVER\\\\\\\\\\\\\\\\\\\\-->
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-server</artifactId>
+            <version>9.4.12.RC2</version>
+        </dependency>
 
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-webapp</artifactId>
+            <version>9.4.12.RC2</version>
+        </dependency>
+    <!--///////////////////////////*\\\\\\\\\\\\\\\\\\\\\\\\\\\-->
     </dependencies>
 
     <build>
