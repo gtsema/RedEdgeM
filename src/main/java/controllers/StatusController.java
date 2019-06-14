@@ -68,10 +68,10 @@ public class StatusController implements Initializable {
 
     @FXML
     private void connectBtnPressed(ActionEvent event) {
-        if (state.get() == STOPPPED) {
-            connect();
-        } else {
+        if (state.get() == RUNNING) {
             disconnect();
+        } else {
+            connect();
         }
     }
 
@@ -121,19 +121,18 @@ public class StatusController implements Initializable {
         mediator.setGUIDisconnect();
     }
 
+    private void error(String message) {
+        stopJob();
+        mediator.setGUIError(message);
+    }
+
     public void pause() {
         state.set(PAUSED);
-        stopJob();
     }
 
     public void resume() {
         state.set(RUNNING);
         startJob();
-    }
-
-    private void error(String message) {
-        stopJob();
-        mediator.setGUIError(message);
     }
 
     public String getIP() {
@@ -154,14 +153,18 @@ public class StatusController implements Initializable {
 
         Thread th = new Thread("ЖОПА") {
             public void run() {
-                state.set(RUNNING);
                 DBService dbService = new DBService(IP);
+
+                state.set(RUNNING);
+
                 while(state.get() == RUNNING) {
                     try {
                         Status status = dbService.getStatus().getOb();
                         NetworkStatus networkStatus = dbService.getNetworkStatus().getOb();
                         int statusCode = dbService.getStatus().getCode();
                         int networkCode = dbService.getNetworkStatus().getCode();
+
+                        if(state.get() == STOPPPED) break;
 
                         Platform.runLater(new Runnable() {
                             @Override

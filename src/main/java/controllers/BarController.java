@@ -1,6 +1,5 @@
 package controllers;
 
-import dbService.entity.Status;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -9,7 +8,7 @@ import javafx.scene.shape.Circle;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import static controllers.MainController.mediator;
-import static controllers.StatusController.RUNNING;
+import static controllers.StatusController.*;
 
 public class BarController {
 
@@ -73,19 +72,30 @@ public class BarController {
                     while (true) {
 
                         if(mediator.getController(StatusController.class).getState() == RUNNING) {
-                            if(wdt.get()) {
-                                Platform.runLater(new Runnable() {
-                                    @Override
-                                    public void run() {
+                            Platform.runLater(new Runnable() {
+                                @Override
+                                public void run() {
+                                    if(wdt.get()) {
                                         mediator.setGUIWaiting();
+                                    } else {
+                                        wdt.set(true);
                                     }
-                                });
-                            } else {
-                                wdt.set(true);
-                            }
+                                }
+                            });
+                        } else if(mediator.getController(StatusController.class).getState() == PAUSED) {
+                            Platform.runLater(new Runnable() {
+                                @Override
+                                public void run() {
+                                    if(wdt.get()) {
+                                        mediator.setGUIConnect();
+                                    } else {
+                                        wdt.set(true);
+                                    }
+                                }
+                            });
                         }
 
-                        Thread.sleep(2000);
+                        Thread.sleep(1000);
 
                     }
                 } catch (InterruptedException e) {

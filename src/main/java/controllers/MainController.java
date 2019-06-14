@@ -59,8 +59,9 @@ public class MainController implements Initializable {
         selectionModel.selectedItemProperty().addListener((observableValue, oldTab, newTab) -> {
             switch (oldTab.getId()) {
                 case "statusTab":
-                    if(getController(StatusController.class).getState() == RUNNING)
+                    if(getController(StatusController.class).getState() == RUNNING) {
                         getController(StatusController.class).pause();
+                    }
                     break;
                 case "captureTab":
                     break;
@@ -70,11 +71,11 @@ public class MainController implements Initializable {
 
             switch (newTab.getId()) {
                 case "statusTab":
-                    if(getController(StatusController.class).getState() == PAUSED)
+                    if(getController(StatusController.class).getState() == PAUSED) {
                         getController(StatusController.class).resume();
+                    }
                     break;
                 case "captureTab":
-                    //init
                     break;
                 case "settingsTab":
                     break;
