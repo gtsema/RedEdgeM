@@ -40,6 +40,9 @@
          </effect>
       </AnchorPane>
         <Separator orientation="VERTICAL" />
-        <Label fx:id="infoLbl" />
+        <Label fx:id="infoLbl">
+         <padding>
+            <Insets bottom="1.0" />
+         </padding></Label>
     </children>
 </HBox>

@@ -26,11 +26,11 @@ import static controllers.MainController.mediator;
 
 public class StatusController implements Initializable {
     //-----------------------------------------------------------------------------------------------------------------
-    final static int STOPPPED = 0;
+    final static int STOPPED = 0;
     final static int RUNNING = 1;
-    final static int PAUSED = 3;
+    final static int PAUSED = 2;
 
-    private final AtomicInteger state = new AtomicInteger(STOPPPED);
+    private final AtomicInteger state = new AtomicInteger(STOPPED);
 
     //-----------------------------------------------------------------------------------------------------------------
 
@@ -112,6 +112,7 @@ public class StatusController implements Initializable {
     //-----------------------------------------------------------------------------------------------------------------
 
     private void connect() {
+        System.out.println("connect");
         mediator.setGUIWaiting();
         startJob();
     }
@@ -148,8 +149,10 @@ public class StatusController implements Initializable {
 
     private void startJob() {
 
+        System.out.println("start");
+
         String IP = getIP();
-        if(IP == null) { error("Введите валидный IP-адрес"); return; }
+        if(IP == null) { error("Введите правильный IP-адрес"); return; }
 
         Thread th = new Thread("ЖОПА") {
             public void run() {
@@ -164,7 +167,7 @@ public class StatusController implements Initializable {
                         int statusCode = dbService.getStatus().getCode();
                         int networkCode = dbService.getNetworkStatus().getCode();
 
-                        if(state.get() == STOPPPED) break;
+                        if(state.get() == STOPPED) break;
 
                         Platform.runLater(new Runnable() {
                             @Override
@@ -194,7 +197,7 @@ public class StatusController implements Initializable {
                         Thread.sleep(1000);
 
                     } catch (InterruptedException | DBException e) {
-                        if(state.get() == STOPPPED) break;
+                        if(state.get() == STOPPED) break;
                         Platform.runLater(() -> {
                             error(e.getMessage());
                         });
@@ -208,6 +211,9 @@ public class StatusController implements Initializable {
     }
 
     private void stopJob() {
-        state.set(STOPPPED);
+
+        System.out.println("stop");
+
+        state.set(STOPPED);
     }
 }
