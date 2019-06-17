@@ -16,9 +16,9 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import utils.IpAddressValidator;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.io.*;
 import java.net.URL;
+import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -30,8 +30,11 @@ public class StatusController implements Initializable {
     final static int RUNNING = 1;
     final static int PAUSED = 2;
 
+    private final String defaultIP = "192.168.1.83";
+
     private final AtomicInteger state = new AtomicInteger(STOPPED);
 
+    private boolean IPIsSaved = false;
     //-----------------------------------------------------------------------------------------------------------------
 
     @FXML
@@ -84,6 +87,17 @@ public class StatusController implements Initializable {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+
+        Properties properties = new Properties();
+        File propertiesFile = new File("ip.properties");
+        try {
+            properties.load(new FileReader(propertiesFile));
+            String IP = properties.getProperty("IP");
+            IPField.setText(IpAddressValidator.isValid(IP) ? IP : defaultIP);
+        } catch (IOException e) {
+            e.printStackTrace();
+            IPField.setText(defaultIP);
+        }
     }
 
     //-----------------------------------------------------------------------------------------------------------------
@@ -110,9 +124,20 @@ public class StatusController implements Initializable {
     }
 
     //-----------------------------------------------------------------------------------------------------------------
+    void pause() {
+        state.set(PAUSED);
+    }
+
+    void resume() {
+        state.set(RUNNING);
+        startJob();
+    }
+
+    int getState() {
+        return state.intValue();
+    }
 
     private void connect() {
-        System.out.println("connect");
         mediator.setGUIWaiting();
         startJob();
     }
@@ -127,29 +152,28 @@ public class StatusController implements Initializable {
         mediator.setGUIError(message);
     }
 
-    public void pause() {
-        state.set(PAUSED);
+    private void saveIP() {
+        Properties properties = new Properties();
+        File propertiesFile = new File("ip.properties");
+        try {
+            String IP = IPField.getText();
+            properties.setProperty("IP", IP);
+            properties.store(new FileWriter(propertiesFile), "last working IP");
+            IPIsSaved = true;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    public void resume() {
-        state.set(RUNNING);
-        startJob();
-    }
-
-    public String getIP() {
+    private String getIP() {
+        IPIsSaved = false;
         String IP = IPField.getText();
-        return new IpAddressValidator().isValid(IP) ? IP : null;
-    }
-
-    public int getState() {
-        return state.intValue();
+        return IpAddressValidator.isValid(IP) ? IP : null;
     }
 
     //-----------------------------------------------------------------------------------------------------------------
 
     private void startJob() {
-
-        System.out.println("start");
 
         String IP = getIP();
         if(IP == null) { error("Введите правильный IP-адрес"); return; }
@@ -173,6 +197,7 @@ public class StatusController implements Initializable {
                             @Override
                             public void run() {
                                 if (statusCode == 200 && networkCode == 200) {
+                                    if(!IPIsSaved) saveIP();
                                     mediator.setGUIConnect();
                                     mediator.getController(BarController.class).resetWDT();
 
@@ -211,9 +236,6 @@ public class StatusController implements Initializable {
     }
 
     private void stopJob() {
-
-        System.out.println("stop");
-
         state.set(STOPPED);
     }
 }

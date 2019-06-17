@@ -11,7 +11,7 @@ public class IpAddressValidator {
     private static final Pattern IP_PATTERN = Pattern.compile(IP_REGEXP);
 
     // Return true when *address* is IP Address
-    public boolean isValid(String address) {
+    public static boolean isValid(String address) {
         return IP_PATTERN.matcher(address).matches();
     }
 }
