@@ -33,6 +33,9 @@ public class MainController implements Initializable {
     private SettingsController settingsController;
 
     @FXML
+    private CaptureController captureController;
+
+    @FXML
     private TabPane tabPane;
 
     //-----------------------------------------------------------------------------------------------------------------
@@ -49,6 +52,7 @@ public class MainController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         repo.put(BarController.class, barController);
         repo.put(StatusController.class, statusController);
+        repo.put(CaptureController.class, captureController);
         repo.put(SettingsController.class, settingsController);
 
         barController.startStateCtrl();
@@ -59,8 +63,8 @@ public class MainController implements Initializable {
         selectionModel.selectedItemProperty().addListener((observableValue, oldTab, newTab) -> {
             switch (oldTab.getId()) {
                 case "statusTab":
-                    if(getController(StatusController.class).getState() == RUNNING) {
-                        getController(StatusController.class).pause();
+                    if(statusController.getState() == RUNNING) {
+                        statusController.pause();
                     }
                     break;
                 case "captureTab":
@@ -71,13 +75,19 @@ public class MainController implements Initializable {
 
             switch (newTab.getId()) {
                 case "statusTab":
-                    if(getController(StatusController.class).getState() == PAUSED) {
-                        getController(StatusController.class).resume();
+                    if(statusController.getState() == PAUSED) {
+                        statusController.resume();
                     }
                     break;
                 case "captureTab":
+                    if(statusController.getState() == PAUSED) {
+                        captureController.fillFields();
+                    }
                     break;
                 case "settingsTab":
+                    if(statusController.getState() == PAUSED) {
+                        settingsController.fillFields();
+                    }
                     break;
             }
         });
@@ -85,7 +95,7 @@ public class MainController implements Initializable {
 
     //-----------------------------------------------------------------------------------------------------------------
 
-    public void setGUIConnect() {
+    void setGUIConnect() {
         barController.setGreenLamp();
         barController.setTextConInfoLbl("Подключено");
         barController.setTextInfoLbl("");
@@ -93,7 +103,7 @@ public class MainController implements Initializable {
         statusController.setIPFieldDisable(true);
     }
 
-    public void setGUIDisconnect() {
+    void setGUIDisconnect() {
         barController.setRedLamp();
         barController.setTextConInfoLbl("Отключено");
         statusController.setTextConnectButton("Подключить");
@@ -101,7 +111,7 @@ public class MainController implements Initializable {
         statusController.setGUIDefaultState();
     }
 
-    public void setGUIWaiting() {
+    void setGUIWaiting() {
         barController.setYellowLamp();
         barController.setTextConInfoLbl("Соединение");
         barController.setTextInfoLbl("");
@@ -109,12 +119,21 @@ public class MainController implements Initializable {
         statusController.setIPFieldDisable(true);
     }
 
-    public void setGUIError(String message) {
+    void setGUIError(String message) {
         barController.setRedLamp();
         barController.setTextConInfoLbl("Ошибка");
         statusController.setTextConnectButton("Подключить");
         barController.setTextInfoLbl(message);
         statusController.setIPFieldDisable(false);
         statusController.setGUIDefaultState();
+    }
+
+    //-----------------------------------------------------------------------------------------------------------------
+
+    void error(String message) {
+        statusController.stopJob();
+        //captureController.stopJob();
+        //settingsController.stopJob();
+        setGUIError(message);
     }
 }

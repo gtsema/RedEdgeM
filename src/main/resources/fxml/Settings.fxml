@@ -1,25 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.control.Separator?>
+<?import java.lang.String?>
+<?import javafx.collections.FXCollections?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.effect.ColorAdjust?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.ColorAdjust?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
 
-<HBox xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.SettingsController" >
+<HBox xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.SettingsController">
     <VBox prefHeight="311.0" prefWidth="279.0">
         <children>
             <VBox style="-fx-border-color: #cacaca; -fx-border-radius: 5;">
                 <children>
-                    <CheckBox fx:id="ecsposition" onAction="#check" mnemonicParsing="false" style="-fx-background-color: #f4f4f4;" text="Экспозиция" >
+                    <CheckBox fx:id="expositionCheckBox" mnemonicParsing="false" onAction="#expose" style="-fx-background-color: #f4f4f4;" text="Экспозиция">
                         <padding>
                             <Insets left="5.0" right="5.0" />
                         </padding>
@@ -27,7 +29,7 @@
                             <Insets left="10.0" top="-10.0" />
                         </VBox.margin>
                     </CheckBox>
-                    <GridPane fx:id="ecspositionTbl" disable="true" hgap="5.0" vgap="5.0">
+                    <GridPane fx:id="expositionTbl" disable="true" hgap="5.0" vgap="5.0">
                         <columnConstraints>
                             <ColumnConstraints hgrow="SOMETIMES" />
                             <ColumnConstraints hgrow="SOMETIMES" maxWidth="51.0" minWidth="49.0" prefWidth="49.0" />
@@ -51,11 +53,11 @@
                             <Label text="Red" GridPane.rowIndex="2" />
                             <Label text="NIR" GridPane.rowIndex="3" />
                             <Label text="RedEdge" GridPane.rowIndex="4" />
-                            <TextField maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="50.0" text="-" GridPane.columnIndex="1" />
-                            <TextField maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="50.0" text="-" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                            <TextField maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="50.0" text="-" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                            <TextField maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="50.0" text="-" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                            <TextField maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="50.0" text="-" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                            <TextField fx:id="expBlue" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="50.0" text="-" GridPane.columnIndex="1" />
+                            <TextField fx:id="expGreen" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="50.0" text="-" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                            <TextField fx:id="expRed" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="50.0" text="-" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                            <TextField fx:id="expNIR" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="50.0" text="-" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                            <TextField fx:id="expRedEdge" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="50.0" text="-" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                             <Label text="мс" GridPane.columnIndex="2" />
                             <Label text="мс" GridPane.columnIndex="2" GridPane.rowIndex="1" />
                             <Label text="мс" GridPane.columnIndex="2" GridPane.rowIndex="2" />
@@ -66,11 +68,71 @@
                             <Label text="Усиление:" GridPane.columnIndex="3" GridPane.rowIndex="2" />
                             <Label text="Усиление:" GridPane.columnIndex="3" GridPane.rowIndex="3" />
                             <Label text="Усиление:" GridPane.columnIndex="3" GridPane.rowIndex="4" />
-                            <ChoiceBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="40.0" GridPane.columnIndex="4" />
-                            <ChoiceBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="40.0" GridPane.columnIndex="4" GridPane.rowIndex="1" />
-                            <ChoiceBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="40.0" GridPane.columnIndex="4" GridPane.rowIndex="2" />
-                            <ChoiceBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="40.0" GridPane.columnIndex="4" GridPane.rowIndex="3" />
-                            <ChoiceBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="40.0" GridPane.columnIndex="4" GridPane.rowIndex="4" />
+                            <ChoiceBox fx:id="expGainBlue" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="40.0" GridPane.columnIndex="4" GridPane.rowIndex="0">
+                                <items>
+                                    <FXCollections fx:factory="observableArrayList">
+                                        <String fx:value="1" />
+                                        <String fx:value="2" />
+                                        <String fx:value="4" />
+                                        <String fx:value="8" />
+                                    </FXCollections>
+                                </items>
+                                <padding>
+                                   <Insets top="-4.0" />
+                                </padding>
+                            </ChoiceBox>
+                            <ChoiceBox fx:id="expGainGreen" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="40.0" GridPane.columnIndex="4" GridPane.rowIndex="1">
+                                <items>
+                                    <FXCollections fx:factory="observableArrayList">
+                                        <String fx:value="1" />
+                                        <String fx:value="2" />
+                                        <String fx:value="4" />
+                                        <String fx:value="8" />
+                                    </FXCollections>
+                                </items>
+                                <padding>
+                                   <Insets top="-4.0" />
+                                </padding>
+                            </ChoiceBox>
+                            <ChoiceBox fx:id="expGainRed" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="40.0" GridPane.columnIndex="4" GridPane.rowIndex="2">
+                                <items>
+                                    <FXCollections fx:factory="observableArrayList">
+                                        <String fx:value="1" />
+                                        <String fx:value="2" />
+                                        <String fx:value="4" />
+                                        <String fx:value="8" />
+                                    </FXCollections>
+                                </items>
+                                <padding>
+                                   <Insets top="-4.0" />
+                                </padding>
+                            </ChoiceBox>
+                            <ChoiceBox fx:id="expGainNIR" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="40.0" GridPane.columnIndex="4" GridPane.rowIndex="3">
+                                <items>
+                                    <FXCollections fx:factory="observableArrayList">
+                                        <String fx:value="1" />
+                                        <String fx:value="2" />
+                                        <String fx:value="4" />
+                                        <String fx:value="8" />
+                                    </FXCollections>
+                                </items>
+                                <padding>
+                                   <Insets top="-4.0" />
+                                </padding>
+                            </ChoiceBox>
+                            <ChoiceBox fx:id="expGainRedEdge" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="40.0" GridPane.columnIndex="4" GridPane.rowIndex="4">
+                                <items>
+                                    <FXCollections fx:factory="observableArrayList">
+                                        <String fx:value="1" />
+                                        <String fx:value="2" />
+                                        <String fx:value="4" />
+                                        <String fx:value="8" />
+                                    </FXCollections>
+                                </items>
+                                <padding>
+                                   <Insets top="-4.0" />
+                                </padding>
+                            </ChoiceBox>
                         </children>
                         <padding>
                             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
@@ -78,13 +140,13 @@
                     </GridPane>
                 </children>
                 <VBox.margin>
-                    <Insets bottom="5.0" left="5.0" right="5.0" top="15.0" />
+                    <Insets bottom="10.0" left="5.0" right="5.0" top="15.0" />
                 </VBox.margin>
             </VBox>
             <HBox spacing="10.0" style="-fx-border-color: #cacaca; -fx-border-radius: 5;">
                 <children>
                     <Label text="Увеличивать усиление с" />
-                    <TextField maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="50.0" text="-" />
+                    <TextField fx:id="gainTime" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="50.0" text="-" />
                     <Label text="секунды" />
                 </children>
                 <VBox.margin>
@@ -113,8 +175,8 @@
                             <RowConstraints vgrow="SOMETIMES" />
                         </rowConstraints>
                         <children>
-                            <CheckBox mnemonicParsing="false" selected="true" text="JPG" GridPane.halignment="CENTER" />
-                            <CheckBox mnemonicParsing="false" text="TIFF" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
+                            <CheckBox fx:id="jpg" onAction="#jpgTiff" mnemonicParsing="false" selected="true" text="JPG" GridPane.halignment="CENTER" />
+                            <CheckBox fx:id="tiff" onAction="#jpgTiff" mnemonicParsing="false" text="TIFF" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
                         </children>
                         <VBox.margin>
                             <Insets bottom="5.0" />
@@ -149,11 +211,10 @@
                         </rowConstraints>
                         <children>
                             <Label text="Установить IPv4 адрес:" GridPane.halignment="CENTER" />
-                            <TextField maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="18.0" prefWidth="100.0" text="192.168.1.83" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
-                            <CheckBox mnemonicParsing="false" text="wifi" GridPane.rowIndex="1" />
+                            <TextField fx:id="ip" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="18.0" prefWidth="100.0" text="192.168.1.83" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
                         </children>
                         <padding>
-                            <Insets bottom="5.0" left="10.0" top="2.0" />
+                            <Insets bottom="6.0" left="10.0" top="2.0" />
                         </padding>
                     </GridPane>
                 </children>

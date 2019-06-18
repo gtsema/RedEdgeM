@@ -1,4 +1,4 @@
 package dbService.entity;
 
-public class Entity {
+abstract class Entity {
 }

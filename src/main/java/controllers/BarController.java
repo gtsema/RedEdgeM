@@ -27,7 +27,7 @@ public class BarController {
 
     //-----------------------------------------------------------------------------------------------------------------
 
-    public void setGreenLamp() {
+    void setGreenLamp() {
         ColorAdjust colorAdjust = new ColorAdjust();
         colorAdjust.setBrightness(-0.4);
         colorAdjust.setContrast(0);
@@ -36,7 +36,7 @@ public class BarController {
         lamp.setEffect(colorAdjust);
     }
 
-    public void setRedLamp() {
+    void setRedLamp() {
         ColorAdjust colorAdjust = new ColorAdjust();
         colorAdjust.setBrightness(0);
         colorAdjust.setContrast(0);
@@ -45,7 +45,7 @@ public class BarController {
         lamp.setEffect(colorAdjust);
     }
 
-    public void setYellowLamp() {
+    void setYellowLamp() {
         ColorAdjust colorAdjust = new ColorAdjust();
         colorAdjust.setBrightness(-0.4);
         colorAdjust.setContrast(0);
@@ -54,11 +54,11 @@ public class BarController {
         lamp.setEffect(colorAdjust);
     }
 
-    public void setTextInfoLbl(String text) {
+    void setTextInfoLbl(String text) {
         infoLbl.setText(text);
     }
 
-    public void setTextConInfoLbl(String text) {
+    void setTextConInfoLbl(String text) {
         conInfoLbl.setText(text);
     }
 

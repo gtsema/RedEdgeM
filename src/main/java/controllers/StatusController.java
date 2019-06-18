@@ -30,8 +30,6 @@ public class StatusController implements Initializable {
     final static int RUNNING = 1;
     final static int PAUSED = 2;
 
-    private final String defaultIP = "192.168.1.83";
-
     private final AtomicInteger state = new AtomicInteger(STOPPED);
 
     private boolean IPIsSaved = false;
@@ -90,6 +88,7 @@ public class StatusController implements Initializable {
 
         Properties properties = new Properties();
         File propertiesFile = new File("ip.properties");
+        String defaultIP = "192.168.1.83";
         try {
             properties.load(new FileReader(propertiesFile));
             String IP = properties.getProperty("IP");
@@ -102,15 +101,15 @@ public class StatusController implements Initializable {
 
     //-----------------------------------------------------------------------------------------------------------------
 
-    public void setTextConnectButton(String text) {
+    void setTextConnectButton(String text) {
         connectBtn.setText(text);
     }
 
-    public void setIPFieldDisable(boolean state) {
+    void setIPFieldDisable(boolean state) {
         IPField.setDisable(state);
     }
 
-    public void setGUIDefaultState() {
+    void setGUIDefaultState() {
         cameraLbl.setText("Нет связи");
         DLSLbl.setText("Нет связи");
         busVoltsLbl.setText("-");
@@ -137,7 +136,13 @@ public class StatusController implements Initializable {
         return state.intValue();
     }
 
+    String getIP() {
+        String IP = IPField.getText();
+        return IpAddressValidator.isValid(IP) ? IP : null;
+    }
+
     private void connect() {
+        IPIsSaved = false;
         mediator.setGUIWaiting();
         startJob();
     }
@@ -145,11 +150,6 @@ public class StatusController implements Initializable {
     private void disconnect() {
         stopJob();
         mediator.setGUIDisconnect();
-    }
-
-    private void error(String message) {
-        stopJob();
-        mediator.setGUIError(message);
     }
 
     private void saveIP() {
@@ -165,18 +165,12 @@ public class StatusController implements Initializable {
         }
     }
 
-    private String getIP() {
-        IPIsSaved = false;
-        String IP = IPField.getText();
-        return IpAddressValidator.isValid(IP) ? IP : null;
-    }
-
     //-----------------------------------------------------------------------------------------------------------------
 
     private void startJob() {
 
         String IP = getIP();
-        if(IP == null) { error("Введите правильный IP-адрес"); return; }
+        if(IP == null) { mediator.error("Введите правильный IP-адрес"); return; }
 
         Thread th = new Thread("ЖОПА") {
             public void run() {
@@ -186,36 +180,32 @@ public class StatusController implements Initializable {
 
                 while(state.get() == RUNNING) {
                     try {
-                        Status status = dbService.getStatus().getOb();
-                        NetworkStatus networkStatus = dbService.getNetworkStatus().getOb();
-                        int statusCode = dbService.getStatus().getCode();
-                        int networkCode = dbService.getNetworkStatus().getCode();
+                        Status status = dbService.getStatus();
+                        NetworkStatus networkStatus = dbService.getNetworkStatus();
 
                         if(state.get() == STOPPED) break;
 
                         Platform.runLater(new Runnable() {
                             @Override
                             public void run() {
-                                if (statusCode == 200 && networkCode == 200) {
-                                    if(!IPIsSaved) saveIP();
-                                    mediator.setGUIConnect();
-                                    mediator.getController(BarController.class).resetWDT();
+                                if(!IPIsSaved) saveIP();
+                                mediator.setGUIConnect();
+                                mediator.getController(BarController.class).resetWDT();
 
-                                    cameraLbl.setText(networkStatus.getCameraStatus() ? "Подключено" : "Нет связи");
-                                    DLSLbl.setText(networkStatus.getDLSStatus() ? "Подключено" : "Нет связи");
-                                    busVoltsLbl.setText(status.getBus_volts().substring(0, 4) + " В.");
+                                cameraLbl.setText(networkStatus.getCameraStatus() ? "Подключено" : "Нет связи");
+                                DLSLbl.setText(networkStatus.getDLSStatus() ? "Подключено" : "Нет связи");
+                                busVoltsLbl.setText(status.getBus_volts().substring(0, 4) + " В.");
 
-                                    sdFreeLbl.setText(status.getSd_gb_free().substring(0, 4));
-                                    sdTotalLbl.setText(status.getSd_gb_total().substring(0, 4));
-                                    sdStatusLbl.setText(status.getSd_status().replace("\"", ""));
+                                sdFreeLbl.setText(status.getSd_gb_free().substring(0, 4));
+                                sdTotalLbl.setText(status.getSd_gb_total().substring(0, 4));
+                                sdStatusLbl.setText(status.getSd_status().replace("\"", ""));
 
-                                    Double sd_total = Double.parseDouble(status.getSd_gb_total());
-                                    Double sd_free = Double.parseDouble(status.getSd_gb_free());
-                                    progressBar.setProgress((sd_total - sd_free) / sd_total);
+                                Double sd_total = Double.parseDouble(status.getSd_gb_total());
+                                Double sd_free = Double.parseDouble(status.getSd_gb_free());
+                                progressBar.setProgress((sd_total - sd_free) / sd_total);
 
-                                    if (status.getSd_warn().equals("true")) progressBar.setStyle("-fx-accent: red");
-                                    else progressBar.setStyle("-fx-accent: rgb(0, 142, 190)");
-                                }
+                                if (status.getSd_warn().equals("true")) progressBar.setStyle("-fx-accent: red");
+                                else progressBar.setStyle("-fx-accent: rgb(0, 142, 190)");
                             }
                         });
 
@@ -224,7 +214,7 @@ public class StatusController implements Initializable {
                     } catch (InterruptedException | DBException e) {
                         if(state.get() == STOPPED) break;
                         Platform.runLater(() -> {
-                            error(e.getMessage());
+                            mediator.error(e.getMessage());
                         });
                     }
                 }
@@ -235,7 +225,7 @@ public class StatusController implements Initializable {
 
     }
 
-    private void stopJob() {
+    void stopJob() {
         state.set(STOPPED);
     }
 }

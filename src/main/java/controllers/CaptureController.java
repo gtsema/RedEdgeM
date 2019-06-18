@@ -126,30 +126,8 @@ public class CaptureController {
         triggerGPane.setDisable(false);
     }
 
-    //----------------------------------------------------------
+    public void fillFields() {
+    }
 
-//    public void CaptureInit() {
-//
-//        Thread captureInitThread = new Thread("ПИЗДЕЦ") {
-//            public void run() {
-//                try {
-//                    //DBService dbService = new DBService(IP);
-//
-//                    Platform.runLater(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            ///ПЫЩЬ///
-//                        }
-//                    });
-//
-//                } catch (DBException e) {
-//                    Platform.runLater(() -> {
-//                        /////////////
-//                    });
-//                }
-//            }
-//        };
-//        captureInitThread.setDaemon(true);
-//        captureInitThread.start();
-//    }
+    //----------------------------------------------------------
 }
