@@ -66,12 +66,14 @@ public class BarController {
 
     public void startStateCtrl() {
         Thread stateCtrl = new Thread("STATE") {
+            private boolean isPauseGreen = false;
             @Override
             public void run() {
                 try {
                     while (true) {
 
                         if(mediator.getController(StatusController.class).getState() == RUNNING) {
+                            isPauseGreen = false;
                             Platform.runLater(new Runnable() {
                                 @Override
                                 public void run() {
@@ -82,7 +84,11 @@ public class BarController {
                                     }
                                 }
                             });
-                        } else if(mediator.getController(StatusController.class).getState() == PAUSED) {
+                        }
+                        // Должна выполняться только один раз после переключения с Статус на др. вкладку и включения режима PAUSED.
+                        // Нужна чтобы в момент переключения вкладки в Waiting-состоянии оставался гореть зелёный.
+                        else if(mediator.getController(StatusController.class).getState() == PAUSED && !isPauseGreen) {
+                            isPauseGreen = true;
                             Platform.runLater(new Runnable() {
                                 @Override
                                 public void run() {

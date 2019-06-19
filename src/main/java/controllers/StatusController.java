@@ -21,10 +21,14 @@ import java.net.URL;
 import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.logging.Logger;
 
 import static controllers.MainController.mediator;
 
 public class StatusController implements Initializable {
+
+    private static Logger log = Logger.getLogger(StatusController.class.getName());
+
     //-----------------------------------------------------------------------------------------------------------------
     final static int STOPPED = 0;
     final static int RUNNING = 1;
@@ -94,7 +98,7 @@ public class StatusController implements Initializable {
             String IP = properties.getProperty("IP");
             IPField.setText(IpAddressValidator.isValid(IP) ? IP : defaultIP);
         } catch (IOException e) {
-            e.printStackTrace();
+            log.warning(e.getMessage());
             IPField.setText(defaultIP);
         }
     }
@@ -136,9 +140,10 @@ public class StatusController implements Initializable {
         return state.intValue();
     }
 
-    String getIP() {
+    String getIP() throws NumberFormatException {
         String IP = IPField.getText();
-        return IpAddressValidator.isValid(IP) ? IP : null;
+        if(IpAddressValidator.isValid(IP)) return IP;
+        else throw new NumberFormatException("Ошибочный IP-адрес");
     }
 
     private void connect() {
@@ -156,21 +161,25 @@ public class StatusController implements Initializable {
         Properties properties = new Properties();
         File propertiesFile = new File("ip.properties");
         try {
-            String IP = IPField.getText();
+            String IP = getIP();
             properties.setProperty("IP", IP);
             properties.store(new FileWriter(propertiesFile), "last working IP");
             IPIsSaved = true;
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (NumberFormatException | IOException e) {
+            log.warning(e.getMessage());
         }
     }
 
     //-----------------------------------------------------------------------------------------------------------------
 
     private void startJob() {
-
-        String IP = getIP();
-        if(IP == null) { mediator.error("Введите правильный IP-адрес"); return; }
+        String IP;
+        try {
+            IP = getIP();
+        } catch (NumberFormatException e) {
+            mediator.error("Введите правильный IP-адрес");
+            return;
+        }
 
         Thread th = new Thread("ЖОПА") {
             public void run() {

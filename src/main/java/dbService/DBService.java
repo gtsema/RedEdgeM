@@ -93,4 +93,15 @@ public class DBService {
     public Config getConfig() throws DBException {
         return gson.fromJson(sendGET("http://" + IP + "/config"), Config.class);
     }
+
+    public void formatSDCard() throws DBException {
+        String request = "{\"erase_all_data\":true}";
+        String url = "http://" + IP + "/reformatsdcard";
+        JsonObject responce = sendPOST(url, request);
+
+        if(!responce.get("reformat_status").getAsString().equals("success")) {
+            log.warning("Ошибка форматирования SD-карты");
+            throw new DBException("Ошибка форматирования SD-карты");
+        }
+    }
 }

@@ -7,10 +7,7 @@ import dbService.entity.Exposure;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.SingleSelectionModel;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 
 import java.util.logging.Logger;
@@ -20,6 +17,10 @@ import static controllers.MainController.mediator;
 public class SettingsController {
 
     private static Logger log = Logger.getLogger(SettingsController.class.getName());
+
+    private String IP;
+
+    //-----------------------------------------------------------------------------------------------------------------
 
     @FXML
     private CheckBox expositionCheckBox;
@@ -70,6 +71,20 @@ public class SettingsController {
     private TextField ip;
 
     @FXML
+    private Button formatSDCard;
+
+    @FXML
+    private Button downloadKMZ;
+
+    @FXML
+    private Button saveChanges;
+
+    @FXML
+    private Button reset;
+
+    //-----------------------------------------------------------------------------------------------------------------
+
+    @FXML
     private void expose(ActionEvent event) {
         if(expositionCheckBox.isSelected()) expositionTbl.setDisable(false);
         else expositionTbl.setDisable(true);
@@ -80,9 +95,57 @@ public class SettingsController {
         if(!jpg.isSelected() && !tiff.isSelected()) { jpg.setSelected(true); }
     }
 
-    public void fillFields() {
-        String IP = mediator.getController(StatusController.class).getIP();
-        if(IP == null) {
+    @FXML
+    private void formatSDCard() {
+        Thread thread = new Thread("formatSDCardPOST") {
+            @Override
+            public void run() {
+                DBService dbService = new DBService(IP);
+                Platform.runLater(() -> {
+                    try {
+                        dbService.formatSDCard();
+                        mediator.setGUIMessage("SD-карта отформатирована.");
+                    } catch (DBException e) {
+                        mediator.error("SD-карта не отформатирована.");
+                        log.warning(e.getMessage());
+                    }
+                });
+            }
+        };
+        thread.start();
+    }
+
+    @FXML
+    private void downloadKMZ() {}
+
+    @FXML
+    private void saveChanges() {}
+
+    @FXML
+    private void reset() {}
+
+    //-----------------------------------------------------------------------------------------------------------------
+
+    void lockBtn() {
+        formatSDCard.setDisable(true);
+        downloadKMZ.setDisable(true);
+        saveChanges.setDisable(true);
+        reset.setDisable(true);
+    }
+
+    void unlockBtn() {
+        formatSDCard.setDisable(false);
+        downloadKMZ.setDisable(false);
+        saveChanges.setDisable(false);
+        reset.setDisable(false);
+    }
+
+    //-----------------------------------------------------------------------------------------------------------------
+
+    void initTab() {
+        try {
+            IP = mediator.getController(StatusController.class).getIP();
+        } catch (NumberFormatException e) {
             mediator.error("Ошибочный IP-адрес. Но такого не может быть...");
             log.warning("IP-адрес == null, хоть всё подключилось и работало.");
             return;
@@ -128,7 +191,7 @@ public class SettingsController {
                         else jpg.setSelected(true);
 
                         if(config.getEnabled_bands_raw().equals("0")) tiff.setSelected(false);
-                        else tiff.setSelected(false);
+                        else tiff.setSelected(true);
 
                         ip.setText(IP);
                     });
@@ -142,5 +205,16 @@ public class SettingsController {
         };
 
         thread.start();
+    }
+
+    //-----------------------------------------------------------------------------------------------------------------
+
+    private String getIP() {
+        String IP = mediator.getController(StatusController.class).getIP();
+        if(IP == null) {
+            mediator.error("Ошибочный IP-адрес. Но такого не может быть...");
+            log.warning("IP-адрес == null, хоть всё подключилось и работало.");
+        }
+        return IP;
     }
 }

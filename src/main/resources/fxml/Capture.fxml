@@ -1,21 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.control.Button?>
+<?import java.lang.String?>
+<?import javafx.collections.FXCollections?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Separator?>
-<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
-<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
 
-<HBox fx:id="root" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.CaptureController" >
+<HBox fx:id="root" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.CaptureController">
     <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="280.0" prefWidth="310.0" style="-fx-border-color: #cacaca; -fx-border-radius: 5;">
         <HBox.margin>
             <Insets bottom="10.0" left="5.0" right="5.0" top="20.0" />
@@ -47,27 +49,27 @@
                     <Label text="Red" GridPane.columnIndex="2" GridPane.halignment="CENTER" />
                     <Label text="NIR" GridPane.columnIndex="3" GridPane.halignment="CENTER" />
                     <Label text="RedEdge" GridPane.columnIndex="4" GridPane.halignment="CENTER" />
-                    <CheckBox mnemonicParsing="false" selected="true" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                    <CheckBox fx:id="manBlue" mnemonicParsing="false" selected="true" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                         <GridPane.margin>
                             <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                         </GridPane.margin>
                     </CheckBox>
-                    <CheckBox mnemonicParsing="false" selected="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                    <CheckBox fx:id="manGreen" mnemonicParsing="false" selected="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                         <GridPane.margin>
                             <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                         </GridPane.margin>
                     </CheckBox>
-                    <CheckBox mnemonicParsing="false" selected="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                    <CheckBox fx:id="manRed" mnemonicParsing="false" selected="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                         <GridPane.margin>
                             <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                         </GridPane.margin>
                     </CheckBox>
-                    <CheckBox mnemonicParsing="false" selected="true" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                    <CheckBox fx:id="manNIR" mnemonicParsing="false" selected="true" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                         <GridPane.margin>
                             <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                         </GridPane.margin>
                     </CheckBox>
-                    <CheckBox mnemonicParsing="false" selected="true" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                    <CheckBox fx:id="manRedEdge" mnemonicParsing="false" selected="true" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                         <GridPane.margin>
                             <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                         </GridPane.margin>
@@ -80,12 +82,12 @@
                     <Insets bottom="5.0" left="5.0" right="5.0" />
                 </padding>
             </GridPane>
-            <Separator maxWidth="-Infinity" minWidth="-Infinity" prefWidth="290.0">
+            <Separator maxWidth="1.7976931348623157E308">
                 <VBox.margin>
                     <Insets left="10.0" />
                 </VBox.margin>
             </Separator>
-            <GridPane vgap="5.0">
+            <GridPane vgap="10.0">
                 <columnConstraints>
                     <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
                 </columnConstraints>
@@ -100,20 +102,13 @@
                     <RowConstraints vgrow="SOMETIMES" />
                 </rowConstraints>
                 <children>
-                    <CheckBox mnemonicParsing="false" text="Антинасыщение" GridPane.rowIndex="1">
+                    <CheckBox fx:id="antisaturation" mnemonicParsing="false" text="Антинасыщение" GridPane.rowIndex="1">
                         <GridPane.margin>
                             <Insets />
                         </GridPane.margin>
                     </CheckBox>
-                    <CheckBox mnemonicParsing="false" selected="true" text="Сохранить на SD карту" GridPane.rowIndex="2" />
-                    <CheckBox fx:id="manLoadChBox" onAction="#checkManLoad" mnemonicParsing="false" text="Загрузить" GridPane.rowIndex="4" />
-                    <HBox alignment="CENTER_LEFT" spacing="10.0" GridPane.rowIndex="5">
-                        <children>
-                            <TextField fx:id="manPathTField" disable="true" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="20.0" prefWidth="200.0" />
-                            <Button fx:id="manOpenBtn" onAction="#manOpen" disable="true" mnemonicParsing="false" text="Обзор" />
-                        </children>
-                    </HBox>
-                    <Separator maxWidth="-Infinity" minWidth="-Infinity" prefWidth="264.0" GridPane.rowIndex="3">
+                    <CheckBox fx:id="manSaveToSD" mnemonicParsing="false" selected="true" text="Сохранить на SD карту" GridPane.rowIndex="2" />
+                    <Separator maxWidth="1.7976931348623157E308" GridPane.rowIndex="3">
                         <GridPane.margin>
                             <Insets />
                         </GridPane.margin>
@@ -121,21 +116,31 @@
                             <Insets top="3.0" />
                         </padding>
                     </Separator>
-                    <Separator maxWidth="246.0" minWidth="264.0" prefWidth="264.0" GridPane.rowIndex="6" />
+                    <CheckBox fx:id="manLoadChBox" mnemonicParsing="false" onAction="#checkManLoad" text="Загрузить" GridPane.rowIndex="4" />
+                    <HBox alignment="CENTER_LEFT" spacing="10.0" GridPane.rowIndex="5">
+                        <children>
+                            <TextField fx:id="manPathTField" disable="true" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="20.0" prefWidth="200.0" />
+                            <Button fx:id="manOpenBtn" disable="true" mnemonicParsing="false" onAction="#manOpen" text="Обзор" />
+                        </children>
+                    </HBox>
+                    <Separator maxWidth="1.7976931348623157E308" GridPane.rowIndex="6" />
                 </children>
                 <padding>
                     <Insets left="10.0" />
                 </padding>
                 <VBox.margin>
-                    <Insets top="10.0" />
+                    <Insets />
                 </VBox.margin>
             </GridPane>
-            <Button mnemonicParsing="false" text="Старт">
+            <Button fx:id="manStartBtn" disable="true" mnemonicParsing="false" onAction="#manStart" text="Старт">
                 <VBox.margin>
-                    <Insets left="10.0" top="60.0" />
+                    <Insets left="10.0" top="35.0" />
                 </VBox.margin>
             </Button>
         </children>
+      <padding>
+         <Insets right="10.0" />
+      </padding>
     </VBox>
     <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="280.0" prefWidth="310.0" style="-fx-border-color: #cacaca; -fx-border-radius: 5;">
         <HBox.margin>
@@ -169,27 +174,27 @@
                     <Label text="Red" GridPane.columnIndex="2" GridPane.halignment="CENTER" />
                     <Label text="NIR" GridPane.columnIndex="3" GridPane.halignment="CENTER" />
                     <Label text="RedEdge" GridPane.columnIndex="4" GridPane.halignment="CENTER" />
-                    <CheckBox mnemonicParsing="false" selected="true" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                    <CheckBox fx:id="autoBlue" mnemonicParsing="false" selected="true" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                         <GridPane.margin>
                             <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                         </GridPane.margin>
                     </CheckBox>
-                    <CheckBox mnemonicParsing="false" selected="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                    <CheckBox fx:id="autoGreen" mnemonicParsing="false" selected="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                         <GridPane.margin>
                             <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                         </GridPane.margin>
                     </CheckBox>
-                    <CheckBox mnemonicParsing="false" selected="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                    <CheckBox fx:id="autoRed" mnemonicParsing="false" selected="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                         <GridPane.margin>
                             <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                         </GridPane.margin>
                     </CheckBox>
-                    <CheckBox mnemonicParsing="false" selected="true" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                    <CheckBox fx:id="autoNIR" mnemonicParsing="false" selected="true" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                         <GridPane.margin>
                             <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                         </GridPane.margin>
                     </CheckBox>
-                    <CheckBox mnemonicParsing="false" selected="true" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                    <CheckBox fx:id="autoRedEdge" mnemonicParsing="false" selected="true" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                         <GridPane.margin>
                             <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                         </GridPane.margin>
@@ -228,13 +233,13 @@
                                     <Insets left="5.0" right="5.0" />
                                 </padding>
                             </Label>
-                            <RadioButton fx:id="overlapRBtn" onAction="#selectMode" mnemonicParsing="false" selected="true" text="Перекрытие" GridPane.rowIndex="1" >
+                            <RadioButton fx:id="overlapRBtn" mnemonicParsing="false" onAction="#selectMode" selected="true" text="Перекрытие" GridPane.rowIndex="1">
                                 <toggleGroup>
                                     <ToggleGroup fx:id="mode" />
                                 </toggleGroup>
                             </RadioButton>
-                            <RadioButton fx:id="timerRBtn" onAction="#selectMode" mnemonicParsing="false" text="Таймер" toggleGroup="$mode" GridPane.rowIndex="2" />
-                            <RadioButton fx:id="triggerRBtn" onAction="#selectMode" mnemonicParsing="false" text="Триггер" toggleGroup="$mode" GridPane.rowIndex="3" />
+                            <RadioButton fx:id="timerRBtn" mnemonicParsing="false" onAction="#selectMode" text="Таймер" toggleGroup="$mode" GridPane.rowIndex="2" />
+                            <RadioButton fx:id="triggerRBtn" mnemonicParsing="false" onAction="#selectMode" text="Триггер" toggleGroup="$mode" GridPane.rowIndex="3" />
                         </children>
                         <padding>
                             <Insets left="5.0" />
@@ -256,9 +261,9 @@
                                     <Label text="Высота полёта, м:" />
                                     <Label text="Верт. перектытие, %:" GridPane.rowIndex="1" />
                                     <Label text="Гор. перекрытие, %:" GridPane.rowIndex="2" />
-                                    <TextField maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="50.0" text="-" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.valignment="CENTER" />
-                                    <TextField maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="50.0" text="-" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-                                    <TextField maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="50.0" text="-" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+                                    <TextField fx:id="alt" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="50.0" text="-" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.valignment="CENTER" />
+                                    <TextField fx:id="vOverlap" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="50.0" text="-" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+                                    <TextField fx:id="hOverlap" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="50.0" text="-" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
                                 </children>
                             </GridPane>
                             <Separator prefWidth="200.0">
@@ -276,7 +281,7 @@
                                 </rowConstraints>
                                 <children>
                                     <Label text="Таймер, сек:" />
-                                    <TextField maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="50.0" text="-" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.valignment="CENTER" />
+                                    <TextField fx:id="timer" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="50.0" text="-" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.valignment="CENTER" />
                                 </children>
                             </GridPane>
                             <Separator prefWidth="200.0">
@@ -296,8 +301,23 @@
                                 <children>
                                     <Label text="Тип импульса:" />
                                     <Label text="Длина импульса, мс:" GridPane.rowIndex="1" />
-                                    <TextField maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="50.0" text="-" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-                                    <ChoiceBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.valignment="CENTER" />
+                                    <ChoiceBox fx:id="triggerType" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.valignment="CENTER">
+                                        <items>
+                                            <FXCollections fx:factory="observableArrayList">
+                                                <String fx:value="восходящий" />
+                                                <String fx:value="нисходящий" />
+                                                <String fx:value="длинный шим" />
+                                                <String fx:value="короткий шим" />
+                                            </FXCollections>
+                                        </items>
+                              <GridPane.margin>
+                                 <Insets />
+                              </GridPane.margin>
+                              <padding>
+                                 <Insets top="-5.0" />
+                              </padding>
+                                    </ChoiceBox>
+                                    <TextField fx:id="triggerThreshold" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="50.0" text="-" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
                                 </children>
                             </GridPane>
                         </children>
@@ -317,7 +337,7 @@
             </Separator>
             <HBox alignment="CENTER_LEFT" spacing="10.0">
                 <children>
-                    <CheckBox fx:id="autoLoadChBox" onAction="#CheckAutoLoad" mnemonicParsing="false" text="Загрузить">
+                    <CheckBox fx:id="autoLoadChBox" mnemonicParsing="false" onAction="#CheckAutoLoad" text="Загрузить">
                         <HBox.margin>
                             <Insets left="10.0" />
                         </HBox.margin>
@@ -327,7 +347,7 @@
                             <Insets left="10.0" />
                         </HBox.margin>
                     </TextField>
-                    <Button fx:id="autoOpenBtn" onAction="#autoOpen" disable="true" mnemonicParsing="false" text="Обзор" />
+                    <Button fx:id="autoOpenBtn" disable="true" mnemonicParsing="false" onAction="#autoOpen" text="Обзор" />
                 </children>
                 <VBox.margin>
                     <Insets right="10.0" />
@@ -338,7 +358,7 @@
                     <Insets left="10.0" top="4.0" />
                 </VBox.margin>
             </Separator>
-            <Button mnemonicParsing="false" text="Старт">
+            <Button fx:id="autoStartBtn" disable="true" mnemonicParsing="false" onAction="#autoStart" text="Старт">
                 <VBox.margin>
                     <Insets left="10.0" top="7.0" />
                 </VBox.margin>

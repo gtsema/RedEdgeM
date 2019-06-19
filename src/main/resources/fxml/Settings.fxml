@@ -175,8 +175,8 @@
                             <RowConstraints vgrow="SOMETIMES" />
                         </rowConstraints>
                         <children>
-                            <CheckBox fx:id="jpg" onAction="#jpgTiff" mnemonicParsing="false" selected="true" text="JPG" GridPane.halignment="CENTER" />
-                            <CheckBox fx:id="tiff" onAction="#jpgTiff" mnemonicParsing="false" text="TIFF" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
+                            <CheckBox fx:id="jpg" mnemonicParsing="false" onAction="#jpgTiff" selected="true" text="JPG" GridPane.halignment="CENTER" />
+                            <CheckBox fx:id="tiff" mnemonicParsing="false" onAction="#jpgTiff" text="TIFF" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
                         </children>
                         <VBox.margin>
                             <Insets bottom="5.0" />
@@ -231,7 +231,7 @@
                     <Insets left="10.0" right="10.0" />
                 </VBox.margin>
             </Separator>
-            <Button maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefWidth="180.0" text="Форматировать карту памяти">
+            <Button fx:id="formatSDCard" onAction="#formatSDCard" disable="true" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefWidth="180.0" text="Форматировать карту памяти">
                 <VBox.margin>
                     <Insets left="10.0" right="10.0" />
                 </VBox.margin>
@@ -241,7 +241,7 @@
                     <Insets left="10.0" right="10.0" />
                 </VBox.margin>
             </Separator>
-            <Button maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefWidth="180.0" text="Скачать kmz-файл">
+            <Button fx:id="downloadKMZ" disable="true" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefWidth="180.0" text="Скачать kmz-файл">
                 <VBox.margin>
                     <Insets left="10.0" right="10.0" />
                 </VBox.margin>
@@ -251,7 +251,7 @@
                     <Insets left="10.0" right="10.0" />
                 </VBox.margin>
             </Separator>
-            <Button cancelButton="true" defaultButton="true" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefWidth="180.0" text="Сохранить настройки">
+            <Button fx:id="saveChanges" defaultButton="true" disable="true" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefWidth="180.0" text="Сохранить настройки">
                 <VBox.margin>
                     <Insets left="10.0" right="10.0" />
                 </VBox.margin>
@@ -259,7 +259,7 @@
                     <ColorAdjust hue="0.36" />
                 </effect>
             </Button>
-            <Button contentDisplay="CENTER" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefWidth="180.0" text="Сбросить настройки">
+            <Button fx:id="reset" contentDisplay="CENTER" disable="true" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefWidth="180.0" text="Сбросить настройки">
                 <VBox.margin>
                     <Insets left="10.0" right="10.0" />
                 </VBox.margin>

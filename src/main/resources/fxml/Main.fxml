@@ -5,25 +5,24 @@
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.layout.VBox?>
 
-
-<VBox prefHeight="360.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.MainController" >
+<VBox prefHeight="360.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.MainController">
    <TabPane fx:id="tabPane" prefHeight="340.0" prefWidth="640.0" tabClosingPolicy="UNAVAILABLE">
       <tabs>
          <Tab fx:id="statusTab" text="Статус">
-            <fx:include fx:id="status" source="Status.fxml"/>
+            <fx:include fx:id="status" source="Status.fxml" />
          </Tab>
 
-         <Tab fx:id="captureTab"  text="Захват">
-            <fx:include fx:id="capture" source="Capture.fxml"/>
+         <Tab fx:id="captureTab" text="Захват">
+            <fx:include fx:id="capture" source="Capture.fxml" />
          </Tab>
 
          <Tab fx:id="settingsTab" text="Настройки">
-            <fx:include fx:id="settings" source="Settings.fxml"/>
+            <fx:include fx:id="settings" source="Settings.fxml" />
          </Tab>
       </tabs>
    </TabPane>
 
    <Separator prefWidth="200.0" />
 
-   <fx:include fx:id="bar" source="Bar.fxml"/>
+   <fx:include fx:id="bar" source="Bar.fxml" />
 </VBox>

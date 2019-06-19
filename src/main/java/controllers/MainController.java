@@ -81,12 +81,12 @@ public class MainController implements Initializable {
                     break;
                 case "captureTab":
                     if(statusController.getState() == PAUSED) {
-                        captureController.fillFields();
+                        captureController.initTab();
                     }
                     break;
                 case "settingsTab":
                     if(statusController.getState() == PAUSED) {
-                        settingsController.fillFields();
+                        settingsController.initTab();
                     }
                     break;
             }
@@ -101,6 +101,8 @@ public class MainController implements Initializable {
         barController.setTextInfoLbl("");
         statusController.setTextConnectButton("Отключить");
         statusController.setIPFieldDisable(true);
+        captureController.unlockStartBtn();
+        settingsController.unlockBtn();
     }
 
     void setGUIDisconnect() {
@@ -109,6 +111,8 @@ public class MainController implements Initializable {
         statusController.setTextConnectButton("Подключить");
         statusController.setIPFieldDisable(false);
         statusController.setGUIDefaultState();
+        captureController.lockStartBtn();
+        settingsController.lockBtn();
     }
 
     void setGUIWaiting() {
@@ -126,6 +130,12 @@ public class MainController implements Initializable {
         barController.setTextInfoLbl(message);
         statusController.setIPFieldDisable(false);
         statusController.setGUIDefaultState();
+        captureController.lockStartBtn();
+        settingsController.lockBtn();
+    }
+
+    void setGUIMessage(String message) {
+        barController.setTextInfoLbl(message);
     }
 
     //-----------------------------------------------------------------------------------------------------------------
