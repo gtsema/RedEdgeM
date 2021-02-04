@@ -1,7 +1,7 @@
 # RedEdgeM
 Программа предназначена для удалённого управления мультиспектральной камерой [RedEdge-M](https://micasense.com).
 Позволяет с помощью проводного или безпроводного сетевого соединения передавать команды,
-согласно HTTP-api.
+используя [RedEdge HTTP Control API](http://micasense.github.io/rededge-api/api/http.html).
 ____
 javafx, jetty, google gson
 ____
